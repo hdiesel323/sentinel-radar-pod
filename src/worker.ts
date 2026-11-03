@@ -7,6 +7,7 @@ import { TaskRecord } from "./types.js";
 
 interface Env {
   DB: D1Database;
+  AI?: any;
   FACTORY_HUB?: { fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response> };
   POD_ID?: string;
   POD_NAME?: string;
@@ -43,6 +44,7 @@ export default {
           name: config.name,
           role: config.role,
           lob: config.lob,
+          hasAiBinding: !!env.AI,
           edge: true,
           timestamp: Date.now(),
         }),
