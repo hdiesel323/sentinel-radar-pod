@@ -1,3 +1,4 @@
+import { authGate } from "./auth.js";
 import { loadPodConfig } from "./config.js";
 import { TincanClient } from "./tincan.js";
 import { setHubAuthToken } from "./skill-engine.js";
@@ -34,6 +35,10 @@ export default {
     if (method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders });
     }
+
+    // Auth gate (agent-workspace#185 C1): every route but /health needs the hub token.
+    const denied = authGate(request, env as any);
+    if (denied) return denied;
 
     // Health Check
     if (url.pathname === "/health") {
